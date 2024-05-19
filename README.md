@@ -11,7 +11,7 @@ The code developed for the grating lobe study in Chapter 3 in my thesis is in th
 
 The aperture smoothing function model is provided in the [ASF model folder](ASF-model). 
 
-A small summary of what each of the files is provided in the folders. 
+A small summary of each of the files is provided in the folders. 
 
 ## Contact information
 
