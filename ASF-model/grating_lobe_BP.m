@@ -1,13 +1,15 @@
-function [W_2w, kx] = grating_lobe_BP(N, M, skew_angle, L_tx, d_Rx, c, Fc, u, plotting, w_Tx)  
-% Returns Tx and Rx beampattern of the SAS at single frequency Fc
+function [W_2w, kx] = grating_lobe_BP(N, M, skew_angle, L_tx, d_Rx, d_Tx, c, Fc, u, plotting, w_Tx)  
+% Returns Tx and Rx beampattern of the SAS at single frequency Fc. Assumes
+% uniform receiver weights.
 % IN:
 %       N               Receive elements
 %       M               Transmits
 %       skew_angle      Yaw error
 %       L_tx            Distance between pings 
 %       d_Rx            Interelement distance in receiver array
+%       d_Tx            Transmitter element width
 %       c               Speed of sound
-%       Fc              Center frequency 
+%       Fc              Frequency
 %       u               u-space values of ASF
 %       plotting        Whether produce plots (plotting=1)
 %       w_Tx            Tapering on the transmitters
@@ -24,7 +26,6 @@ kx = 2*pi/lambda*u; % Wavenumber
 W_sub_Rx = 1/N*sin((kx+k0)*d_Rx*N/2)./sin((kx+k0)*d_Rx/2); % For uniform receiver weights
 
 % Modified transmit array + beampattern
-d_Tx = 1.5*d_Rx;
 ELpos_Tx = (0:(M-1)).*L_tx - (M-1)*L_tx/2; % Assumes centered transmit array
 W_Tx_mod = BP(ELpos_Tx,kx*2, w_Tx); 
 

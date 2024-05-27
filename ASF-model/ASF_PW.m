@@ -1,19 +1,22 @@
 function [total_BP, angles, u] = ASF_PW(options)
-% Calculates the TOTAL aperture smoothing function from a PW for several
-% frequencies
-
+% Calculates the broadband aperture smoothing function (ASF)
+% OUT:
+%       total_BP        Total broadband ASF
+%       angles          Corresponding angles in degrees
+%       u               Corresponding u-values 
 arguments 
-    options.N           (1,1) = 16 % Receive elements
-    options.M           (1,1) = 5 % Transmits
+    options.N           (1,1) = 28 % Receive elements
+    options.M           (1,1) = 38 % Transmits
     options.bw          (1,1) = 3e4 % Bandwidth
     options.fc          (1,1) = 1e5 % Center frequency
     options.c           (1,1) = 1500 % Speed of sound
-    options.d           (1,1) = 2.5*(1500/1e5) % Receive element width/distance
-    options.skew_angle  (1,1) = 0 % Yaw error
+    options.d_rx        (1,1) = 2.5*(1500/1e5) % Receive element width/distance
+    options.d_tx        (1,1) = 1.5*2.5*(1500/1e5) % Transmitter element width
+    options.skew_angle  (1,1) = 0.41; % Yaw error
     options.L_tx        (1,1) = 0.525; % Distance between pings
     options.NFFT        (1,1) = 2048*6; % Number of samples in the ASF
     options.u_max       (1,1) = 1; % Maximum absolute u value in u-space
-    options.w_Tx        (1,:) = ones(1,5)/5; % Transmit weighitng
+    options.w_Tx        (1,:) = hamming(1,38)/38; % Transmit weighitng
 end
 
 c = options.c; fc = options.fc;
@@ -21,7 +24,7 @@ bw = options.bw;
 N = options.N; M = options.M;
 skew_angle = options.skew_angle;
 L_tx = options.L_tx;
-d_Rx = options.d;
+d_Rx = options.d_rx; d_Tx = options.d_tx;
 u_max = options.u_max; NFFT = options.NFFT;
 w_Tx = options.w_Tx;
 
@@ -40,7 +43,7 @@ angles = rad2deg(asin(u));
 
 for f=1:length(freq) % Loop over frequencies 
    
-    [W_2w, ~] = grating_lobe_BP(N, M, skew_angle, L_tx, d_Rx, c, freq(f),u, 0, w_Tx); % Single-frequency ASF
+    [W_2w, ~] = grating_lobe_BP(N, M, skew_angle, L_tx, d_Rx, d_Tx, c, freq(f),u, 0, w_Tx); % Single-frequency ASF
 
     pulse_factor = lfmspec(f); % Frequeny component of LFM pulse
 
