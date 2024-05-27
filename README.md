@@ -15,4 +15,4 @@ A small summary of each of the files is provided in the folders.
 
 ## Contact information
 
-Please direct any questions or comments to mariaop3004@gmail.com
+Please direct any questions or comments to mariaop3004@gmail.com.
